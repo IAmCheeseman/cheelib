@@ -1,5 +1,6 @@
 chee=require("cheelib/lib")
 
+
 -- Toggles pausing
 function love.keypressed(key, scancode, isrepeat)
     if key == "escape" then
@@ -9,20 +10,25 @@ end
 
 
 function love.load()
-    -- An object that counts down.
-    chee.add_object(
-        {
-            count_down=timer.new(5),
-            init=function(self)
-                chee.add_object(self.count_down)
-            end,
-            update=function(self, dt)
-                if not self.count_down:is_over() then
-                    print(self.count_down.time_left)
-                end
+    -- Creating an object that moves right for half a second
+    -- and then removes itself.
+    chee.add_object({
+        position=vec.new(0, 100),
+        lifetime=timer.new(0.5),
+        init=function(self)
+            chee.add_child(self, self.lifetime)
+        end,
+        update=function(self, dt)
+            self.position.x = self.position.x + dt * 500
+            if self.lifetime:is_over() then
+                chee.remove_object(self)
             end
-        }
-    )
+        end,
+        draw=function(self)
+            draw.setColor(color.new(0.5, 0.5, 1))
+            draw.circle("fill", self.position, 16)
+        end
+    })
 end
 
 -- You need to call `chee.update_objects()` to process objects.

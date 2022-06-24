@@ -8,7 +8,6 @@ local game = {
 local collisions = {}
 local objects = {}
 
-
 -- Setting aliases
 draw = love.graphics
 kb = love.keyboard
@@ -22,22 +21,20 @@ mouse = love.mouse
 --   The object has add_child and a children table.
 --   That the object's children will be initalized as well.
 local function initalize_object(obj)
-    obj.add_child = add_child
     if not obj.children then
         obj.children = {}
     else 
-        for i, obj in ipairs(obj.children) do
-            initalize_object(obj)
+        for i, child in ipairs(obj.children) do
+            initalize_object(child)
         end
     end
-    -- Calling the init function at the end so the object can
-    -- use `add_child()` in the init.
     if obj.init then obj:init() end
 end
 
 -- This function is applied to every object added to the tree,
 -- so long as it's initalized by `initalize_object`
 local function add_child(self, obj)
+    initalize_object(obj)
     table.insert(self.children, obj)
 end
 
@@ -48,7 +45,7 @@ end
 
 local function remove_object(obj)
     for i=1,#objects do
-        if objects[i] == object then
+        if objects[i] == obj then
             table.remove(objects, i)
             return
         end
@@ -80,7 +77,7 @@ local function update_objects(dt)
 end
 
 local function draw_children(children)
-    for i, object in ipairs(objects) do
+    for i, object in ipairs(children) do
         if object.draw then
             object:draw()
         end
@@ -95,6 +92,7 @@ end
 return {
     game=game,
     add_object=add_object,
+    add_child=add_child,
     remove_object=remove_object,
     update_objects=update_objects,
     draw_objects=draw_objects,
