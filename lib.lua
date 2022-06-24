@@ -33,9 +33,18 @@ end
 
 -- This function is applied to every object added to the tree,
 -- so long as it's initalized by `initalize_object`
-local function add_child(self, obj)
+local function add_child(parent, obj)
     initalize_object(obj)
-    table.insert(self.children, obj)
+    table.insert(parent.children, obj)
+end
+
+local function remove_child(parent, obj)
+    for i=1,#parent.children do
+        if parent.children[i] == obj then
+            table.remove(parent.children, i)
+            return
+        end
+    end
 end
 
 local function add_object(obj)
@@ -94,6 +103,7 @@ return {
     add_object=add_object,
     add_child=add_child,
     remove_object=remove_object,
+    remove_child=remove_child,
     update_objects=update_objects,
     draw_objects=draw_objects,
     add_collision_layer=add_collision_layer,
