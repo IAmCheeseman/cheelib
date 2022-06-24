@@ -22,7 +22,6 @@ mouse = love.mouse
 --   The object has add_child and a children table.
 --   That the object's children will be initalized as well.
 local function initalize_object(obj)
-    if obj.init then obj:init() end
     obj.add_child = add_child
     if not obj.children then
         obj.children = {}
@@ -31,8 +30,13 @@ local function initalize_object(obj)
             initalize_object(obj)
         end
     end
+    -- Calling the init function at the end so the object can
+    -- use `add_child()` in the init.
+    if obj.init then obj:init() end
 end
 
+-- This function is applied to every object added to the tree,
+-- so long as it's initalized by `initalize_object`
 local function add_child(self, obj)
     table.insert(self.children, obj)
 end
