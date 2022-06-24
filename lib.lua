@@ -17,6 +17,10 @@ mouse = love.mouse
 
 -- Object management functions.
 
+-- Initializing objects makes sure that:
+--   The `init()` function is called.
+--   The object has add_child and a children table.
+--   That the object's children will be initalized as well.
 local function initalize_object(obj)
     if obj.init then obj:init() end
     obj.add_child = add_child
@@ -27,6 +31,10 @@ local function initalize_object(obj)
             initalize_object(obj)
         end
     end
+end
+
+local function add_child(self, obj)
+    table.insert(self.children, obj)
 end
 
 local function add_object(obj)
@@ -53,16 +61,12 @@ local function add_collision_layers(amt)
 end
 
 
-local function add_child(self, obj)
-    table.insert(self.children, obj)
-end
-
 local function update_children(children, dt)
     for i, object in ipairs(children) do
         if object.update then
             object:update(dt)
-            update_children(object.children, dt)
         end
+        update_children(object.children, dt)
     end
 end
 
@@ -71,10 +75,17 @@ local function update_objects(dt)
     update_children(objects, dt)
 end
 
-local function draw_objects()
+local function draw_children(children)
     for i, object in ipairs(objects) do
-        if object.draw then object:draw() end
+        if object.draw then
+            object:draw()
+        end
+        draw_children(object.children)
     end
+end
+
+local function draw_objects()
+    draw_children(objects) 
 end
 
 return {
