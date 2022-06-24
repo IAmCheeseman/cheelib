@@ -9,4 +9,4 @@ A more update friendly version of my previous love2dlib
 
 And you're done!
 
-Check out [example_main.lua](https://github.com/IAmCheeseman/cheelib/blob/main/example_main.lua) to see how it's used :)
+Check out [example_main.lua](https://github.com/IAmCheeseman/cheelib/blob/main/example_main.lua) to see how it's used. :)

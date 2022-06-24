@@ -17,8 +17,20 @@ mouse = love.mouse
 
 -- Object management functions.
 
-local function add_object(obj)
+local function initalize_object(obj)
     if obj.init then obj:init() end
+    if not obj.children then
+        obj.children = {}
+        obj.add_child = add_child
+    else 
+        for i, obj in ipairs(obj.children) do
+            initalize_object(obj)
+        end
+    end
+end
+
+local function add_object(obj)
+    initalize_object(obj)
     table.insert(objects, obj)
 end
 
@@ -41,11 +53,22 @@ local function add_collision_layers(amt)
 end
 
 
+local function add_child(self, obj)
+    table.insert(self.children, obj)
+end
+
+local function update_children(children, dt)
+    for i, object in ipairs(children) do
+        if object.update then
+            object:update(dt)
+            update_children(object.children, dt)
+        end
+    end
+end
+
 local function update_objects(dt)
     if game.paused then return end
-    for i, object in ipairs(objects) do
-        if object.update then object:update(dt) end
-    end
+    update_children(objects, dt)
 end
 
 local function draw_objects()
