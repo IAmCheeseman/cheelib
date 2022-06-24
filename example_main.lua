@@ -25,12 +25,12 @@ function love.load()
     )
 end
 
-
+-- You need to call `chee.update_objects()` to process objects.
 function love.update(dt)
     chee.update_objects(dt)
 end
 
-
+-- You need to call `chee.draw_objects()` to draw objects.
 function love.draw()
     chee.draw_objects()
 end
