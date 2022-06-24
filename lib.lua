@@ -19,9 +19,9 @@ mouse = love.mouse
 
 local function initalize_object(obj)
     if obj.init then obj:init() end
+    obj.add_child = add_child
     if not obj.children then
         obj.children = {}
-        obj.add_child = add_child
     else 
         for i, obj in ipairs(obj.children) do
             initalize_object(obj)
