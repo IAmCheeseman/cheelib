@@ -1,4 +1,10 @@
-chee=require("cheelib/lib")
+chee=require("cheelib")
+
+
+-- This file would be in the parent directory of this repo,
+-- which would be cloned in your project directory.
+-- The reason it's made like this is so you can update it
+-- whenever you need.
 
 
 -- Toggles pausing
