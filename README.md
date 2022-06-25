@@ -5,7 +5,7 @@ A more update friendly version of my previous love2dlib
 
 - `cd` into your new project.
 - run `git clone https://github.com/IAmCheeseman/cheelib.git cheelib`
-- in `main.lua`, add `chee = require("cheelib")`
+- in your main lua file, add `chee = require("cheelib")`
 
 And you're done!
 
